@@ -39,6 +39,18 @@ speed_by_over = 100,  // edit this value
 // z-index
 zIindex = 1001;       // edit this value
 
+
+// go back
+function move_back() { 
+   window.history.back();
+} // end of function
+
+// go forward
+function move_fw() { 
+   window.history.forward();
+} // end of function
+
+
 // move up
 function move_up() { 
     position = document.documentElement.scrollTop || document.body.scrollTop;
@@ -121,7 +133,10 @@ function shareCSS(){
     // button id
     s+='#play_btn_up { position:fixed; right:45%; top:100%;z-index:'+zIindex+'; height:20px; width:50px; cursor:pointer; background:url('+img_up+') no-repeat scroll 50% 50% rgba(0, 0, 0, 0.7); border-radius:5px 0 0 5px; margin-top:-24px; }'; 
     s+='#play_btn_dn { position:fixed; right:50%; top:100%;   z-index:'+zIindex+'; height:20px; width:50px; cursor:pointer; background:url('+img_dn+') no-repeat scroll 50% 50% rgba(0, 0, 0, 0.7); border-radius:5px 0 0 5px; margin-top:-24px; }'; 
-    // button class
+     s+='#play_btn_bk { position:fixed; left:0%; top:50%;   z-index:'+zIindex+'; height:100px; width:10px; cursor:pointer; background:url('+img_dn+') no-repeat scroll 50% 50% rgba(0, 0, 0, 0.7); border-radius:5px 0 0 5px; margin-top:-24px; }'; 
+     s+='#play_btn_fw { position:fixed; right:0%; top:50%;   z-index:'+zIindex+'; height:100px; width:10px; cursor:pointer; background:url('+img_dn+') no-repeat scroll 50% 50% rgba(0, 0, 0, 0.7); border-radius:5px 0 0 5px; margin-top:-24px; }'; 
+   
+  // button class
     s+='.play_btn { -webkit-transition-duration:0.5s linear; -o-transition-duration:0.5s linear; -moz-transition-duration:0.5s linear; transition-duration:0.5s linear; opacity:0.65; }'; 
     s+='.play_btn:hover { opacity:1; }'; 
 	// append
@@ -131,7 +146,7 @@ function shareCSS(){
 // main
 function create_btn_element() { 
     // get scroll
-	var up, dn, 
+	var up, dn, bk,fw,
 	    scrolled,
 	    h = get_scroll('Height');
     // exit
@@ -145,21 +160,30 @@ function create_btn_element() {
 		// create DOM element
 		up = ce('span');
 		dn = ce('span');
+    bk = ce('span');fw = ce('span');
 		// set attribute
 		up.setAttribute('id','play_btn_up');
 		dn.setAttribute('id','play_btn_dn');
+		bk.setAttribute('id','play_btn_bk');
+    fw.setAttribute('id','play_btn_fw');
 		// set class
 		up.className = "play_btn";
 		dn.className = "play_btn";
+    bk.className = "play_btn";
+    fw.className = "play_btn";
         // append element
 		document.body.appendChild(up);
 		document.body.appendChild(dn);
+    document.body.appendChild(bk);
+    document.body.appendChild(fw);
 		
 		// scroll
 		scrolled = window.pageYOffset || document.documentElement.scrollTop;
 		// if scroll 
 		up.style.display = (scrolled > 0)  ? "" : "none";
-		
+		bk.style.display = "";
+    fw.style.display = "";
+    
 		// add event over
 		up.addEventListener('mouseover', move_up, false);
 		dn.addEventListener('mouseover', move_dn, false);
@@ -170,6 +194,9 @@ function create_btn_element() {
 		up.addEventListener('click', move_top, false);
 	//	dn.addEventListener('click', function(){ scrollTo(el, getDocumentHeight(), speed_by_click); }, false);
 		dn.addEventListener('click',move_down, false);
+    
+    bk.addEventListener('click',move_back, false);
+    fw.addEventListener('click',move_fw, false);
 		// add event scroll
 		window.onscroll = function() { 
 		    var scrolled = window.pageYOffset || document.documentElement.scrollTop, diffHeight = document.body.scrollHeight - window.innerHeight;
